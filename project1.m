@@ -1,6 +1,6 @@
 %-----------------------------%
 %         Sean Hwang          %
-% ECE 538 - MATLAB Homework 1 %
+% ECE 538 - MATLAB Project 1 %
 %     Source Code File        %
 %-----------------------------%
 
