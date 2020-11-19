@@ -1,2 +1,2 @@
 # ECE-538-Ditigal-Signal-Processing
-ECE53800 - DIgital Signal Processing coursework
+Digital Signal Processing MATLAB Projects 
