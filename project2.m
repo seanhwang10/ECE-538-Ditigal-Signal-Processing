@@ -35,3 +35,9 @@ H(6,:) = conv(H_temp, h100); G(6,:) = H(6, :);
 H_temp = conv(h1, h10);
 H(7,:) = conv(H_temp, h000); G(7,:) = H(7, :); 
 H(8,:) = conv(H_temp, h100); G(8,:) = -H(8, :); 
+
+% i) All corresponding DTFT's H_m(w) 
+
+
+
+
