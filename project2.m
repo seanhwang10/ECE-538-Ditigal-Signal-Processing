@@ -71,5 +71,40 @@ legend('H_1(\omega)', 'H_2(\omega)', ...
 grid on
 
 %ii) 8x8 matrix HH^H 
-table1 = H*H' 
+
+table1 = H*H'; 
+table1 = round(table1)
+
+% table1 =
+% 
+%      1     0     0     0     0     0     0     0
+%      0     1     0     0     0     0     0     0
+%      0     0     1     0     0     0     0     0
+%      0     0     0     1     0     0     0     0
+%      0     0     0     0     1     0     0     0
+%      0     0     0     0     0     1     0     0
+%      0     0     0     0     0     0     1     0
+%      0     0     0     0     0     0     0     1
+
+%iii) DTFT of the Gaussian random process input signal 
+
+x = randn(1,128); 
+
+for m = 1:M
+    W(m,:) = conv(x,H(m,:));
+    X(m,:) = W(m,1:M:length(W(m,:)));
+end
+
+for m = 1:M
+    Z(m,:) = zeros(1,M*length(X(m,:)));
+    Z(m,1:M:length(Z(m,:))) = X(m,:);
+    Y(m,:) = conv(Z(m,:),G(m,:));
+end
+
+y = zeros(1,length(Y(1,:)));
+
+for m = 1:M
+    y = y+Y(m,:);
+end
+
 
