@@ -194,3 +194,45 @@ grid on
 
 %ii) 8x8 matrix HH^H 
 table2 = H_B*H_B'
+
+%iii) DTFT of the Gaussian random process input signal 
+for m = 1:M
+    W_B(m,:) = conv(x,H_B(m,:));
+    X_B(m,:) = W_B(m,1:M:length(W_B(m,:)));
+end
+for m = 1:M
+    Z_B(m,:) = zeros(1,M*length(X_B(m,:)));
+    Z_B(m,1:M:length(Z_B(m,:))) = X_B(m,:);
+    Y_B(m,:) = conv(Z_B(m,:),G_B(m,:));
+end
+
+y_B = zeros(1,length(Y_B(1,:)));
+
+for m = 1:M
+    y_B = y_B + Y_B(m,:);
+end
+
+domega_B = 2*pi/1024;
+omega_B = -pi:domega_B:pi-domega_B;
+
+yf1_B = abs(fftshift(fft(x,1024)));
+yf2_B = M*abs(fftshift(fft(y_B,1024)));
+
+figure(5);
+plot(omega_B,yf1_B)
+axis([-pi pi 0 max(yf1_B)])
+xlabel('Omega, \omega (rad/sec)');
+ylabel('Magnitude of DTFT') 
+title('Figure 2(b): DTFT of Gaussian random process input signal') 
+grid on 
+
+%iv) DTFT of the corresponding output of the filter 
+figure(6);
+plot(omega_B,yf2_B)
+axis([-pi pi 0 max(yf2_B)])
+xlabel('Omega, \omega (rad/sec)');
+ylabel('Magnitude of DTFT') 
+title('Figure 2(c): DTFT of the Gaussian random process output') 
+grid on 
+
+
