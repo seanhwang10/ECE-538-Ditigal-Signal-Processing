@@ -75,17 +75,6 @@ grid on
 table1 = H*H'; 
 table1 = round(table1)
 
-% table1 =
-% 
-%      1     0     0     0     0     0     0     0
-%      0     1     0     0     0     0     0     0
-%      0     0     1     0     0     0     0     0
-%      0     0     0     1     0     0     0     0
-%      0     0     0     0     1     0     0     0
-%      0     0     0     0     0     1     0     0
-%      0     0     0     0     0     0     1     0
-%      0     0     0     0     0     0     0     1
-
 %iii) DTFT of the Gaussian random process input signal 
 
 x = randn(1,128); 
@@ -180,3 +169,28 @@ h_mB(5,:)=abs(fftshift(fft(H_B(5,:),512)));
 h_mB(6,:)=abs(fftshift(fft(H_B(6,:),512)));
 h_mB(7,:)=abs(fftshift(fft(H_B(7,:),512)));
 h_mB(8,:)=abs(fftshift(fft(H_B(8,:),512))); 
+
+domega_B = 2 * pi / 512; 
+omega_B = -pi:domega_B:pi-domega_B; 
+
+figure(4) %Figure 2(a)  
+plot(omega_B, h_mB(1,:), ... 
+     omega_B, h_mB(2,:), ... 
+     omega_B, h_mB(3,:), ... 
+     omega_B, h_mB(4,:), ... 
+     omega_B, h_mB(5,:), ... 
+     omega_B, h_mB(6,:), ... 
+     omega_B, h_mB(7,:), ... 
+     omega_B, h_mB(8,:)); 
+axis([-pi pi 0 3]); 
+title('Figura 2(a): All corresponding DTFT''s h_m(\omega)')
+ylabel('h_m(\omega)'); 
+xlabel('omega, \omega (rad/sec)');
+legend('H_1(\omega)', 'H_2(\omega)', ...
+       'H_3(\omega)', 'H_4(\omega)', ...
+       'H_5(\omega)', 'H_6(\omega)', ...
+       'H_7(\omega)', 'H_8(\omega)'); 
+grid on
+
+%ii) 8x8 matrix HH^H 
+table2 = H_B*H_B'
