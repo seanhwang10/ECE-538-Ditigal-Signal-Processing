@@ -101,8 +101,37 @@ for m = 1:M
     Y(m,:) = conv(Z(m,:),G(m,:));
 end
 
-y=zeros(1,length(Y(1,:)));
+y = zeros(1,length(Y(1,:)));
 
-for m = 1:M;
-y=y+Y(m,:);
+for m = 1:M
+    y = y+Y(m,:);
 end
+
+domega = 2*pi/1024;
+omega = -pi:domega:pi-domega;
+
+yf1 = abs(fftshift(fft(x,1024)));
+yf2 = abs(fftshift(fft(y,1024)));
+
+figure(2) %Figure 1(b) 
+plot(omega, yf1)
+axis([-pi pi 0 max(yf1)]) 
+xlabel('Omega, \omega (rad/sec)');
+ylabel('Magnitude of DTFT') 
+title('Figure 1(b): DTFT of Gaussian random process input signal') 
+grid on 
+
+%iv) DTFT of the corresponding output of the filter 
+
+figure(3) %Figure 1(c) 
+plot(omega, yf2, 'r')
+axis([-pi pi 0 max(yf2)]) 
+xlabel('Omega, \omega (rad/sec)');
+ylabel('Magnitude of DTFT') 
+title('Figure 1(c): DTFT of the Gaussian random process output') 
+grid on 
+
+
+% B) h_0
+
+
