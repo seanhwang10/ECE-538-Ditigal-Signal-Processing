@@ -121,7 +121,7 @@ title('Figure 1(c): DTFT of the Gaussian random process output')
 grid on 
 
 
-% B) h_0 = h ,, h_1 = (-1)^n * h_0 
+% B) h_0 = h ,, h_1 = (-1)^n * h_0 ,, beta = 0.35 
 
 N = 16; 
 beta = 0.35; 
@@ -235,4 +235,118 @@ ylabel('Magnitude of DTFT')
 title('Figure 2(c): DTFT of the Gaussian random process output') 
 grid on 
 
+
+% C) h_0 = h ,, h_1 = (-1)^n * h_0 ,, beta = 0.1 
+
+N = 24; 
+beta = 0.1; 
+n = -N:(N-1);
+n = n+0.5;
+
+h = 2 * beta * cos((1+beta)*pi*n/2)./(pi*(1-4*beta^2*n.^2));
+h = h + sin((1-beta)*pi*n/2)./(pi*(n-4*beta^2*n.^3));
+h = h * sqrt(2); 
+
+h0 = h;
+h1 = (-1).^(0:(length(n)-1)).*h; 
+h00 = zeros(1,2*length(h)); 
+h10 = h00;
+h00(1,1:2:length(h00)) = h0;
+h10(1,1:2:length(h10)) = h1;
+h000 = zeros(1,4*length(h)); 
+h100 = h000;
+h000(1,1:4:length(h000)) = h0;
+h100(1,1:4:length(h100)) = h1; 
+
+H_tempB = conv(h0, h00); 
+H_C(1,:) = conv(H_tempB, h000); G_C(1,:) = H_C(1, :); 
+H_C(2,:) = conv(H_tempB, h100); G_C(2,:) = -H_C(2, :); 
+
+H_tempB = conv(h0, h10);
+H_C(3,:) = conv(H_tempB, h000); G_C(3,:) = -H_C(3, :); 
+H_C(4,:) = conv(H_tempB, h100); G_C(4,:) = H_C(4, :); 
+
+H_tempB = conv(h1, h00);
+H_C(5,:) = conv(H_tempB, h000); G_C(5,:) = -H_C(5, :); 
+H_C(6,:) = conv(H_tempB, h100); G_C(6,:) = H_C(6, :); 
+
+H_tempB = conv(h1, h10);
+H_C(7,:) = conv(H_tempB, h000); G_C(7,:) = H_C(7, :); 
+H_C(8,:) = conv(H_tempB, h100); G_C(8,:) = -H_C(8, :); 
+
+% i) All corresponding DTFT's h_mB(w) 
+
+h_mB(1,:)=abs(fftshift(fft(H_C(1,:),512)));
+h_mB(2,:)=abs(fftshift(fft(H_C(2,:),512)));
+h_mB(3,:)=abs(fftshift(fft(H_C(3,:),512)));
+h_mB(4,:)=abs(fftshift(fft(H_C(4,:),512)));
+h_mB(5,:)=abs(fftshift(fft(H_C(5,:),512)));
+h_mB(6,:)=abs(fftshift(fft(H_C(6,:),512)));
+h_mB(7,:)=abs(fftshift(fft(H_C(7,:),512)));
+h_mB(8,:)=abs(fftshift(fft(H_C(8,:),512))); 
+
+domega_C = 2 * pi / 512; 
+omega_C = -pi:domega_C:pi-domega_C; 
+
+figure(7) %Figure 3(a)  
+plot(omega_C, h_mB(1,:), ... 
+     omega_C, h_mB(2,:), ... 
+     omega_C, h_mB(3,:), ... 
+     omega_C, h_mB(4,:), ... 
+     omega_C, h_mB(5,:), ... 
+     omega_C, h_mB(6,:), ... 
+     omega_C, h_mB(7,:), ... 
+     omega_C, h_mB(8,:)); 
+axis([-pi pi 0 3]); 
+title('Figura 3(a): All corresponding DTFT''s h_m(\omega)')
+ylabel('h_m(\omega)'); 
+xlabel('omega, \omega (rad/sec)');
+legend('H_1(\omega)', 'H_2(\omega)', ...
+       'H_3(\omega)', 'H_4(\omega)', ...
+       'H_5(\omega)', 'H_6(\omega)', ...
+       'H_7(\omega)', 'H_8(\omega)'); 
+grid on
+
+%ii) 8x8 matrix HH^H 
+table3 = H_C*H_C'
+
+%iii) DTFT of the Gaussian random process input signal 
+for m = 1:M
+    W_C(m,:) = conv(x,H_C(m,:));
+    X_C(m,:) = W_C(m,1:M:length(W_C(m,:)));
+end
+for m = 1:M
+    Z_C(m,:) = zeros(1,M*length(X_C(m,:)));
+    Z_C(m,1:M:length(Z_C(m,:))) = X_C(m,:);
+    Y_C(m,:) = conv(Z_C(m,:),G_C(m,:));
+end
+
+y_C = zeros(1,length(Y_C(1,:)));
+
+for m = 1:M
+    y_C = y_C + Y_C(m,:);
+end
+
+domega_C = 2*pi/1024;
+omega_C = -pi:domega_C:pi-domega_C;
+
+yf1_C = abs(fftshift(fft(x,1024)));
+yf2_C = M*abs(fftshift(fft(y_C,1024)));
+
+figure(8);
+plot(omega_C,yf1_C)
+axis([-pi pi 0 max(yf1_C)])
+xlabel('Omega, \omega (rad/sec)');
+ylabel('Magnitude of DTFT') 
+title('Figure 3(b): DTFT of Gaussian random process input signal') 
+grid on 
+
+%iv) DTFT of the corresponding output of the filter 
+figure(9);
+plot(omega_C,yf2_C)
+axis([-pi pi 0 max(yf2_C)])
+xlabel('Omega, \omega (rad/sec)');
+ylabel('Magnitude of DTFT') 
+title('Figure 3(c): DTFT of the Gaussian random process output') 
+grid on 
 
