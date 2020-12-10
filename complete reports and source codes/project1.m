@@ -24,6 +24,7 @@ x = [m127 zeros(1, 200-127)];
 x20 = [zeros(1,20) m127 zeros(1, 200-127-20)]; 
 %x[n-20] 
 xD2 = [zeros(1,D2) m127 zeros(1, 200-127-D2)];  
+
 %x[n-D] 
 
 % Parameters not to be changed 
