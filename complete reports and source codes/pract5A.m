@@ -6,8 +6,8 @@ close all
 clear all
 
 
-x=input('enter the sequence, x(n)=')
-h=input('enter the sequence, h(n)=')
+x= [exp(j*pi*0) exp(j*pi*1) exp(j*pi*2) exp(j*pi*3) exp(j*pi*4) exp(j*pi*5) exp(j*pi*6) exp(j*pi*7)]
+h= [(-1)^0 (-1)^1 (-1)^2 (-1)^3 ]
 
 m=length(x);
 n=length(h);
